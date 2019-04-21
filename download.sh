@@ -21,4 +21,4 @@ fshare_download() {
   curl -s $extracted_download_url | \
     rclone rcat $rclone_remote_name:"$remote_folder_path""$download_file_name"
 }
-fshare_download $1 $2 $3
+fshare_download "$1" "$2" "$3"
