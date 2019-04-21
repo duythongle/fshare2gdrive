@@ -22,4 +22,4 @@ login()
     printf "\n${red}User ${fshare_username} login failed! ${nc}\n" >&2
   fi
 }
-login $1 $2
+login
