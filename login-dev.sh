@@ -3,7 +3,7 @@ login()
   local fshare_username=""
   local fshare_password=""
   [ -z "$1" ] && read -p "Please input FShare username: " fshare_username || fshare_username=$1
-  [ -z "$2" ] && stty -echo; read -p "Please input FShare password: " fshare_password; stty echo || fshare_password=$2
+  [ -z "$2" ] && read -s -p "Please input FShare password: " fshare_password || fshare_password=$2
   local fshare_api_key="L2S7R6ZMagggC5wWkQhX2+aDi467PPuftWUMRFSn"
   local fshare_login="https://api2.fshare.vn/api/user/login"
   local fshare_download_url="https://api2.fshare.vn/api/session/download"
