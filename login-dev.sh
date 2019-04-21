@@ -27,8 +27,4 @@ fshare_login()
     return 0
   fi
 }
-<<<<<<< HEAD
 fshare_login fshare_username fshare_password
-=======
-fshare_login
->>>>>>> d4314b6a7da246419aace9bd0c96cc80fa790220
