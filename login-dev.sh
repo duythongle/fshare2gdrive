@@ -1,3 +1,5 @@
+
+#!/bin/bash
 fshare_login()
 {
   local fshare_username=""
