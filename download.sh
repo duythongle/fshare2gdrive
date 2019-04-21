@@ -19,6 +19,6 @@ fshare_download() {
   local download_file_name=$(echo $extracted_download_url | gawk 'match($0, /.+\/(.+?)$/, group) {print group[1]}')
   echo 'Uploading to: '$rclone_remote_name':'$remote_folder_path$download_file_name
   curl -s $extracted_download_url | \
-    rclone rcat $rclone_remote_name:$remote_folder_path$download_file_name
+    rclone rcat "$rclone_remote_name":"$remote_folder_path$download_file_name"
 }
 fshare_download "$1" "$2" "$3"
