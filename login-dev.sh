@@ -12,7 +12,7 @@ login()
 	local fshare_login_data=$(printf "$fshare_login_template" "$fshare_api_key" "$fshare_username" "$fshare_password")
 	local fshare_login_result=$(curl -s $fshare_login -d $fshare_login_data)
 	local fshare_login_status=$(echo $fshare_login_result | gawk 'match($0, /(Login successfully\!)/, group) {print group[1]}')
-	if [ $fshare_login_status != "" ]
+	if [ "$fshare_login_status" != "" ]
 	then
 		printf "${green}User ${fshare_username} login successfully! ${nc}\n"
 		echo $fshare_login_result > ~/.fshare_login_result
