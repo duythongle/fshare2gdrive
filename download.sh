@@ -19,6 +19,7 @@ fshare_download() {
   local green="\033[0;32m"
   local nc="\e[0m"
   local download_file_name=$(echo $extracted_download_url | gawk 'match($0, /.+\/(.+?)$/, group) {print group[1]}')
+  printf "${green}Found VIP download link: ${extracted_download_url}${nc}\n"
   printf "${green}Uploading ${fshare_file_url} to ${rclone_remote_name}:${remote_folder_path}${download_file_name}${nc}\n"
   curl -s $extracted_download_url | \
     rclone rcat "$rclone_remote_name":"$remote_folder_path$download_file_name"
