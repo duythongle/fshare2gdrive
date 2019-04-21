@@ -1,4 +1,3 @@
-
 #!/bin/bash
 echo "Start logging in..."
 fshare_login()
