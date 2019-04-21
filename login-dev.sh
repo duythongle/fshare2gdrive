@@ -1,4 +1,4 @@
-login()
+fshare_login()
 {
   local fshare_username=""
   local fshare_password=""
@@ -22,4 +22,3 @@ login()
     printf "\n${red}User ${fshare_username} login failed! ${nc}\n" >&2
   fi
 }
-login
