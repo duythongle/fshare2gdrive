@@ -2,6 +2,7 @@ fshare_download() {
   local fshare_file_url="$1"
   local rclone_remote_name="$2"
   local remote_folder_path="$3"
+  echo $remote_folder_path
 
   local fshare_download_api="https://api2.fshare.vn/api/session/download"
   local fshare_login_result=$(cat ~/.fshare_login_result)
