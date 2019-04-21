@@ -21,7 +21,9 @@ fshare_login()
   if [ "$fshare_login_status" != "" ]; then
     printf "\n${green}User ${fshare_username} login successfully! ${nc}\n"
     echo $fshare_login_result > ~/.fshare_login_result
+    retun 1
   else
     printf "\n${red}User ${fshare_username} login failed! ${nc}\n" >&2
+    return 0
   fi
 }
