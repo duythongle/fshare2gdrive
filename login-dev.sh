@@ -27,4 +27,4 @@ fshare_login()
     return 0
   fi
 }
-fshare_login $1 $2
+fshare_login
