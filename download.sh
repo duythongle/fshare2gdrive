@@ -19,9 +19,16 @@ fshare_download() {
   local green="\033[0;32m"
   local nc="\e[0m"
   local download_file_name=$(echo $extracted_download_url | gawk 'match($0, /.+\/(.+?)$/, group) {print group[1]}')
-  printf "${green}- Found VIP download link: ${extracted_download_url}${nc}\n"
-  printf "${green}- Uploading ${fshare_file_url} to ${rclone_remote_name}:${remote_folder_path}${download_file_name}${nc}\n"
-  curl -s $extracted_download_url | \
-    rclone rcat "$rclone_remote_name":"$remote_folder_path$download_file_name"
+  if [ "$extracted_download_url" != "" ]; then
+    printf "${green}- ${fshare_file_url} - Found VIP download link: ${extracted_download_url}${nc}\n"
+    printf "${green}- Uploading ${extracted_download_url} to ${rclone_remote_name}:${remote_folder_path}${download_file_name}${nc}. Please wait...\n"
+    curl -s $extracted_download_url | \
+      rclone rcat "$rclone_remote_name":"$remote_folder_path$download_file_name"
+    return 1
+  else
+    printf "\n${red}${fshare_file_url} - VIP download link not found! Please login again ${nc}\n" >&2
+    return 0
+  fi
+  
 }
 fshare_download "$1" "$2" "$3"
