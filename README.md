@@ -41,4 +41,5 @@ E.g:
 # the command below will download "https://www.fshare.vn/file/XXXXXXXXXXX" and pipe upload to "rclone rcat gdrive-remote:/RClone Upload/"
 curl -s https://duythongle.github.io/fshare2gdrive/download.sh | bash -s "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"
 ```
+> If you keep getting ssh timeout issue, please make use of [Tmux](https://hackernoon.com/a-gentle-introduction-to-tmux-8d784c404340) or [ssh config file](https://stackoverflow.com/questions/25084288/keep-ssh-session-alive)
 

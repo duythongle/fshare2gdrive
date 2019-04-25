@@ -29,6 +29,5 @@ fshare_download() {
     printf "\n${red}${fshare_file_url} - VIP download link not found! Please login again ${nc}\n" >&2
     return 0
   fi
-  
 }
 fshare_download "$1" "$2" "$3"
