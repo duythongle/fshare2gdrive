@@ -1,5 +1,11 @@
 #!/bin/bash
 
+urldecode() {
+    # urldecode <string>
+
+    local url_encoded="${1//+/ }"
+    printf '%b' "${url_encoded//%/\\x}"
+}
 fshare_download() {
   local fshare_file_url="$1"
   local rclone_remote_name="$2"
@@ -20,7 +26,7 @@ fshare_download() {
   local red="\033[0;31m"
   local green="\033[0;32m"
   local nc="\e[0m"
-  local download_file_name=$(echo $extracted_download_url | gawk 'match($0, /.+\/(.+?)$/, group) {print group[1]}')
+  local download_file_name=$(echo $extracted_download_url | gawk 'match($0, /.+\/(.+?)$/, group) {print group[1]}' | urldecode)
   if [ "$extracted_download_url" != "" ]; then
     printf "${green}- ${fshare_file_url} - Found VIP download link: ${extracted_download_url}${nc}\n"
     printf "${green}- Uploading ${extracted_download_url} to ${rclone_remote_name}:${remote_folder_path}${download_file_name}${nc}. Please wait...\n"
