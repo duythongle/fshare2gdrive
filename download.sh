@@ -1,3 +1,5 @@
+#!/bin/bash
+
 fshare_download() {
   local fshare_file_url="$1"
   local rclone_remote_name="$2"
