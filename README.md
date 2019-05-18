@@ -2,7 +2,7 @@
 Shell script for direct uploading from FShare.vn to Google Drive without storing files locally.
 
 # Dependencies
-This script denpend on bash, curl and gawk. Please install all of them first. E.g:
+This script denpend on python, bash, curl and gawk. Please install all of them first. E.g:
 ``` bash
 # Install on Ubuntu
 sudo apt-get install bash, curl, gawk -y
