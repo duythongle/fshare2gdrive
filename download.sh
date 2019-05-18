@@ -1,23 +1,5 @@
 #!/bin/bash
 
-urlencode() {
-    # urlencode <string>
-    local length="${#1}"
-    for (( i = 0; i < length; i++ )); do
-        local c="${1:i:1}"
-        case $c in
-            [a-zA-Z0-9.~_-]) printf "$c" ;;
-            *) printf '%%%02X' "'$c" ;;
-        esac
-    done
-}
-
-urldecode() {
-    # urldecode <string>
-
-    local url_encoded="${1//+/ }"
-    printf '%b' "${url_encoded//%/\\x}"
-}
 fshare_download() {
   local fshare_file_url="$1"
   local rclone_remote_name="$2"
@@ -35,10 +17,12 @@ fshare_download() {
     -H 'Content-Type: application/json' \
     -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36' \
     -d $fshare_download_data --compressed | gawk 'match($0, /"location"\:"(.+?)"/, group) {print group[1]}' | sed -e 's/\\//g')
+  printf "${extracted_download_url}\n" 
   local red="\033[0;31m"
   local green="\033[0;32m"
   local nc="\e[0m"
-  local download_file_name=$(echo $extracted_download_url | gawk 'match($0, /.+\/(.+?)$/, group) {print group[1]}' | urldecode)
+  local download_file_name=$(echo $extracted_download_url | gawk 'match($0, /.+\/(.+?)$/, group) {print group[1]}')
+  download_file_name=$(python -c "import sys, urllib as ul; print ul.unquote_plus(\""$download_file_name\"")")
   if [ "$extracted_download_url" != "" ]; then
     printf "${green}- ${fshare_file_url} - Found VIP download link: ${extracted_download_url}${nc}\n"
     printf "${green}- Uploading ${extracted_download_url} to ${rclone_remote_name}:${remote_folder_path}${download_file_name}${nc}. Please wait...\n"
