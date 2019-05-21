@@ -1,7 +1,7 @@
 #!/bin/bash
 
 fshare_download() {
-  local fshare_file_url="$1"
+  local fshare_file_url=$(echo $1 | awk 'match($0,/(^.+?)\?/,group) {print group[1]}')
   local rclone_remote_name="$2"
   local remote_folder_path="$3"
 
