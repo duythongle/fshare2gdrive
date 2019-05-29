@@ -13,7 +13,7 @@ sudo apt-get install bash, curl, gawk -y
 1. Install and login gdrive with rclone
 ```bash
 # Install rclone
-curl https://rclone.org/install.sh | sudo bash
+curl -s https://rclone.org/install.sh | sudo bash
 # Login
 rclone config
 ```
