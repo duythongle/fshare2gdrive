@@ -17,17 +17,16 @@ fshare_download() {
     -H 'Content-Type: application/json' \
     -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36' \
     -d $fshare_download_data --compressed | gawk 'match($0, /"location"\:"(.+?)"/, group) {print group[1]}' | sed -e 's/\\//g')
-  printf "${extracted_download_url}\n" 
+	extracted_download_url=$(python -c "import sys, urllib as ul; print ul.unquote_plus(\""$extracted_download_url\"")")
   local red="\033[0;31m"
   local green="\033[0;32m"
   local nc="\e[0m"
   local download_file_name=$(echo $extracted_download_url | gawk 'match($0, /.+\/(.+?)$/, group) {print group[1]}')
-  download_file_name=$(python -c "import sys, urllib as ul; print ul.unquote_plus(\""$download_file_name\"")")
   if [ "$extracted_download_url" != "" ]; then
-    printf "${green}- ${fshare_file_url} - Found VIP download link: ${extracted_download_url}${nc}\n"
+    printf "${green}- ${fshare_file_url} - Found VIP download link${nc}\n"
     printf "${green}- Uploading ${extracted_download_url} to ${rclone_remote_name}:${remote_folder_path}${download_file_name}${nc}. Please wait...\n"
     curl -s $extracted_download_url | \
-      rclone rcat "$rclone_remote_name":"$remote_folder_path$download_file_name"
+      rclone rcat --stats-one-line -P --stats 2s "$rclone_remote_name":"$remote_folder_path$download_file_name"
     return 1
   else
     printf "\n${red}${fshare_file_url} - VIP download link not found! Please login again ${nc}\n" >&2
