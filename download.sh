@@ -25,7 +25,7 @@ fshare_download() {
   if [ "$extracted_download_url" != "" ]; then
     printf "${green}- ${fshare_file_url} - Found VIP download link${nc}\n"
     printf "${green}- Uploading ${extracted_download_url} to ${rclone_remote_name}:${remote_folder_path}${download_file_name}${nc}. Please wait...\n"
-    curl -s $extracted_download_url | \
+    curl -s "$extracted_download_url" | \
       rclone rcat --stats-one-line -P --stats 2s "$rclone_remote_name":"$remote_folder_path$download_file_name"
     return 1
   else
