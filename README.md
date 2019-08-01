@@ -42,8 +42,8 @@ Please see [RClone official documents support for Google Drive](https://rclone.o
 
 ``` bash
 # Download this script
-sudo curl -s -o /usr/local/bin/fshare2gdrive.js \
-https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js
+curl -s https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
+sudo tee /usr/local/bin/fshare2gdrive.js >/dev/null
 # Make it executable
 sudo chmod +x /usr/local/bin/fshare2gdrive.js
 # Init login FShare
