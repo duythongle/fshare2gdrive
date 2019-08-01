@@ -190,7 +190,7 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 	} catch(e) {console.error(RED, e)}
 }
 
-async function genCmd(fshare_folder, remote_drive, remote_path) {
+async function genCmd(fshare_folder, remote_drive, remote_path, is_root_folder=true) {
 	const folder_code = fshare_folder.match(/folder\/(\w+)$/)[1]
 	const FSHARE_FOLDER_PATH = `/api/v3/files/folder?linkcode=${folder_code}&sort=type,-modified&page=1`
 	
@@ -204,11 +204,12 @@ async function genCmd(fshare_folder, remote_drive, remote_path) {
 		const body = await request(options, false)
 		const promises = body.items.map(async item => {
 			if (item.type === 1) {
-				console.log(`curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "https://fshare.vn/file/${item.linkcode}" "${remote_drive}" "${remote_path.replace(/\/$/,'')}${item.path}/"`)
+				let cmd = `curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "https://fshare.vn/file/${item.linkcode}" "${remote_drive}" "${remote_path.replace(/\/$/,'')}/${(is_root_folder ? body.current.name + '/' : '')}"`
+				console.log(cmd)
 			}	else {
 				item_folder = `https://fshare.vn/folder/${item.linkcode}`
-				item_path = `${remote_path.replace(/\/$/,'')}${item.path}/${item.name}/`
-				await genCmd(item_folder, remote_drive, item_path)
+				item_path = `${remote_path.replace(/\/$/,'')}/${body.current.name}/${item.name}/`
+				await genCmd(item_folder, remote_drive, item_path, false)
 			}
 		})
 		await Promise.all(promises)
