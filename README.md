@@ -38,7 +38,7 @@ rclone config
 
 Please see [RClone official documents support for Google Drive](https://rclone.org/drive/) for more details.
 
-2. Install this script
+2. Install this script and login fshare
 
 ``` bash
 # Download this script
@@ -46,9 +46,12 @@ sudo curl -s -o /usr/local/bin/fshare2gdrive.js \
 https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js
 # Make it executable
 sudo chmod +x /usr/local/bin/fshare2gdrive.js
-
+# Init login FShare
+fshare2gdrive.js
 
 ```
+
+> On the first time you login, it will ask for login FShare `username` and `password` then store login credentials to `$HOME/creds` in PLAIN TEXT for later use. So use with caution!
 
 3. Download single FShare FILE to GDrive
 
@@ -71,8 +74,6 @@ E.g:
 # and pipe upload to "rclone rcat gdrive-remote:/RClone Upload/"
 fshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"
 ```
-
-> If you run the command in the first time, it will ask for login FShare `username` and `password` then store login credentials to `$HOME/creds` in PLAIN TEXT. So use with caution!
 
 4. Download whole FShare FOLDER to GDrive synchronously (one by one file) ***RECOMMENDED way***
 
