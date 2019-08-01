@@ -1,6 +1,8 @@
 #!/bin/bash
 
 fshare_download() {
+  printf "${green}- This script is deprecated! Please see link below for better version${nc}\n"
+  printf "${green}https://github.com/duythongle/fshare2gdrive/blob/master/README.md${nc}\n"
   local fshare_file_url=$(echo $1 | awk 'match($0,/(^.+\/\w+)/,group) {print group[1]}')
   local rclone_remote_name="$2"
   local remote_folder_path="$3"
