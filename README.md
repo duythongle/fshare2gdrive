@@ -1,6 +1,6 @@
 # fshare2gdrive
 NodeJS script for direct uploading from FShare.vn to Google Drive without storing files locally.
-> For deprecated bash script (download.sh and login.sh). Please see [here](https://github.com/duythongle/fshare2gdrive/blob/0cead7f9229fe6e54b2e9e81add0f6da4bdf453b/README.md).
+> For deprecated bash script (download.sh and login.sh), please see [here](https://github.com/duythongle/fshare2gdrive/blob/0cead7f9229fe6e54b2e9e81add0f6da4bdf453b/README.md).
 
 ## Dependencies
 
