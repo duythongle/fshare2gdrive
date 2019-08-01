@@ -74,7 +74,7 @@ fshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClo
 
 > If you run the command in the first time, it will ask for login FShare `username` and `password` then store login credentials to `$HOME/creds` in PLAIN TEXT. So use with caution!
 
-3. Download whole FShare FOLDER to GDrive synchronously (one by one file) ***RECOMMENDED way***
+4. Download whole FShare FOLDER to GDrive synchronously (one by one file) ***RECOMMENDED way***
 
 ``` bash
 fshare2gdrive.js "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" | bash
@@ -98,7 +98,7 @@ fshare2gdrive.js "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RC
 
 ```
 
-4. Download whole FShare FOLDER to GDrive in parallel ***(Use with caution!)***
+5. Download whole FShare FOLDER to GDrive in parallel ***(Use with caution!)***
 
 You can run the jobs in parallel with [GNU Parallel](https://www.gnu.org/software/parallel/). E.g:
 
