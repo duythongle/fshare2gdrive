@@ -15,12 +15,12 @@ rclone config
 
 Please see [RClone official documents support for Google Drive](https://rclone.org/drive/) for more details.
 
-2. NodeJS and curl
+2. NodeJS 10+, [GNU Parallel](https://www.gnu.org/software/parallel/) and curl
 
 ``` bash
 # Install on Ubuntu
 sudo apt-get update && \
-sudo apt-get install curl -y && \
+sudo apt-get install parallel curl -y && \
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash
 ```
 
@@ -78,7 +78,10 @@ fshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClo
 4. Download whole FShare FOLDER to GDrive synchronously (one by one file) ***RECOMMENDED way***
 
 ``` bash
-fshare2gdrive.js "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" | bash
+# "parallel -j 1" will download synchronously (one by one file) RECOMMENDED!
+# "parallel -j X" greater then 1 will download in parallel with X number of simultaneous jobs
+fshare2gdrive.js "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" > \
+temp && parallel -j 1 < temp
 ```
 
 `<fshare_folder_url>`: your fshare file link.
@@ -86,7 +89,7 @@ fshare2gdrive.js "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_pa
 `<rclone_remote_name>`: your rclone remote name that you have configured in step 1
 
 `<remote_folder_path>`: your remote folder path you want to upload to.
-> Don't forget double quote your parameters
+> Use parallel download ONLY when you make sure all folders included subfolders are exist in remote folder path or rclone will create duplicated folders!
 
 E.g:
 
@@ -95,24 +98,9 @@ E.g:
 # files of folder "https://www.fshare.vn/folder/XXXXXXXXXXX"
 # and pipe upload to
 # "rclone rcat gdrive-remote:/RClone Upload/fshare/folder/path/included/subfolder"
-fshare2gdrive.js "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" | bash
-
-```
-
-5. Download whole FShare FOLDER to GDrive in parallel ***(Use with caution!)***
-
-You can run the jobs in parallel with [GNU Parallel](https://www.gnu.org/software/parallel/). E.g:
-
-``` bash
-# The command below will download recursively
-# all files of folder "https://www.fshare.vn/folder/XXXXXXXXXXX"
-# and pipe upload to
-# "rclone rcat gdrive-remote:/RClone Upload/fshare/folder/path/included/subfolder"
-# It will download in parallel with 2 simultaneous jobs
 fshare2gdrive.js "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" > \
-temp && parallel -j 2 < temp
+temp && parallel -j 1 < temp
 
 ```
 
-> Make sure all folders included subfolders are exist in remote folder path or rclone will create duplicated folders.
 > If you keep getting ssh timeout issue, please make use of [Tmux](https://hackernoon.com/a-gentle-introduction-to-tmux-8d784c404340) or [ssh config file](https://stackoverflow.com/questions/25084288/keep-ssh-session-alive)
