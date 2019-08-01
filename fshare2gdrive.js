@@ -221,7 +221,6 @@ async function genCmd(fshare_folder, remote_drive, remote_path, is_root_folder=t
 }
 
 (async () => {
-	await checkLogin(false)
 	try {
 		if (args[0] === undefined || !args[0].search(/fshare[.]vn\/(file|folder)\//)) {
 			throw new Error('No FShare url found! Please input a valid FShare url. E.g:\nfshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"')
@@ -234,9 +233,11 @@ async function genCmd(fshare_folder, remote_drive, remote_path, is_root_folder=t
 		process.exit(1)
 	}
 	if (args[0].search(/fshare[.]vn\/folder\//) !== -1){
+		await checkLogin(false)
 		await genCmd(args[0], args[1], args[2])
 		process.exit(0)
 	} else {
+		await checkLogin()
 		await transfer(args[0], args[1], args[2])
 		process.exit(0)
 	}
