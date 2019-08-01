@@ -51,7 +51,7 @@ fshare2gdrive.js
 
 ```
 
-> On the first time you login, it will ask for login FShare `username` and `password` then store login credentials to `$HOME/creds` in PLAIN TEXT for later use. So use with caution!
+> On the first time you login, it will ask for login FShare `username` and `password` then store login credentials to `$HOME/.creds` in PLAIN TEXT for later use. So use with caution!
 
 3. Download single FShare FILE to GDrive
 
