@@ -41,7 +41,8 @@ Please see [RClone official documents support for Google Drive](https://rclone.o
 2. Download single FShare FILE to GDrive
 
 ``` bash
-curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "<fshare_file_url>" "<rclone_remote_name>" "<remote_folder_path>"
+curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | \
+node - "<fshare_file_url>" "<rclone_remote_name>" "<remote_folder_path>"
 ```
 
 `<fshare_file_url>`: your fshare file link.
@@ -54,8 +55,10 @@ curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "<f
 E.g:
 
 ``` bash
-# the command below will download "https://www.fshare.vn/file/XXXXXXXXXXX" and pipe upload to "rclone rcat gdrive-remote:/RClone Upload/"
-curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"
+# the command below will download "https://www.fshare.vn/file/XXXXXXXXXXX"
+# and pipe upload to "rclone rcat gdrive-remote:/RClone Upload/"
+curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | \
+node - "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"
 ```
 
 > If you run the command in the first time, it will ask for login FShare `username` and `password` then store login credentials to `$HOME/creds` in PLAIN TEXT. So use with caution!
@@ -63,7 +66,8 @@ curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "ht
 3. Download whole FShare FOLDER to GDrive synchronously (one by one file) ***RECOMMENDED way***
 
 ``` bash
-curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" | bash
+curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | \
+node - "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" | bash
 ```
 
 `<fshare_folder_url>`: your fshare file link.
@@ -76,8 +80,12 @@ curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "<f
 E.g:
 
 ``` bash
-# The command below will download recursively all files of folder "https://www.fshare.vn/folder/XXXXXXXXXXX" and pipe upload to "rclone rcat gdrive-remote:/RClone Upload/fshare/folder/path/included/subfolder"
-curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" | bash
+# The command below will download recursively all
+# files of folder "https://www.fshare.vn/folder/XXXXXXXXXXX"
+# and pipe upload to
+# "rclone rcat gdrive-remote:/RClone Upload/fshare/folder/path/included/subfolder"
+curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | \
+node - "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" | bash
 ```
 
 4. Download whole FShare FOLDER to GDrive in parallel ***(Use with caution!)***
@@ -85,9 +93,14 @@ curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "ht
 You can run the jobs in parallel with [GNU Parallel](https://www.gnu.org/software/parallel/). E.g:
 
 ``` bash
-# The command below will download recursively all files of folder "https://www.fshare.vn/folder/XXXXXXXXXXX" and pipe upload to "rclone rcat gdrive-remote:/RClone Upload/fshare/folder/path/included/subfolder"
+# The command below will download recursively
+# all files of folder "https://www.fshare.vn/folder/XXXXXXXXXXX"
+# and pipe upload to
+# "rclone rcat gdrive-remote:/RClone Upload/fshare/folder/path/included/subfolder"
 # It will download in parallel with 2 simultaneous jobs
-curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" | parallel -j 2
+curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | \
+node - "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" | \
+parallel -j 2
 ```
 
 > Make sure all folders included subfolders are exist in remote folder path or rclone will create duplicated folders.
