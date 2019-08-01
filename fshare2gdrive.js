@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 const path = require('path')
 const util = require('util')
 const fs = require('fs')
@@ -204,7 +205,7 @@ async function genCmd(fshare_folder, remote_drive, remote_path, is_root_folder=t
 		const body = await request(options, false)
 		const promises = body.items.map(async item => {
 			if (item.type === 1) {
-				let cmd = `curl -s https://duythongle.github.io/fshare2gdrive/fshare2gdrive.js | node - "https://fshare.vn/file/${item.linkcode}" "${remote_drive}" "${remote_path.replace(/\/$/,'')}/${(is_root_folder ? body.current.name + '/' : '')}"`
+				let cmd = `fshare2gdrive.js "https://fshare.vn/file/${item.linkcode}" "${remote_drive}" "${remote_path.replace(/\/$/,'')}/${(is_root_folder ? body.current.name + '/' : '')}"`
 				console.log(cmd)
 			}	else {
 				item_folder = `https://fshare.vn/folder/${item.linkcode}`
@@ -220,23 +221,22 @@ async function genCmd(fshare_folder, remote_drive, remote_path, is_root_folder=t
 }
 
 (async () => {
+	await checkLogin(false)
 	try {
 		if (args[0] === undefined || !args[0].search(/fshare[.]vn\/(file|folder)\//)) {
-			throw new Error('No FShare url found! Please input a valid FShare url.\nE.g: curl -s https://duythongle.github.io/fshare2gdrive/download.sh | bash -s "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"')
+			throw new Error('No FShare url found! Please input a valid FShare url. E.g:\nfshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"')
 		}
 		if (args === undefined || args.length < 3) {
-			throw new Error('Invalid arguments! Please input valid arguments.\nE.g: curl -s https://duythongle.github.io/fshare2gdrive/download.sh | bash -s "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"')
+			throw new Error('Invalid arguments! Please input valid arguments. E.g:\nfshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"')
 		}
 	} catch (e) {
 		console.error(RED, e)
 		process.exit(1)
 	}
 	if (args[0].search(/fshare[.]vn\/folder\//) !== -1){
-		await checkLogin(false)
 		await genCmd(args[0], args[1], args[2])
 		process.exit(0)
 	} else {
-		await checkLogin(args[0], args[1], args[2])
 		await transfer(args[0], args[1], args[2])
 		process.exit(0)
 	}
