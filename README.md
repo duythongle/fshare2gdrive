@@ -9,8 +9,10 @@ NodeJS script for direct uploading from FShare.vn to Google Drive without storin
 ```bash
 # Install RClone
 curl -s https://rclone.org/install.sh | sudo bash
+
 # Login GDrive for RClone.
 rclone config
+
 ```
 
 Please see [RClone official documents support for Google Drive](https://rclone.org/drive/) for more details.
@@ -31,11 +33,14 @@ curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash
 1. Install this script and login fshare
 
 ``` bash
-# Download/update this script 
+# Download/update this script
+# Rerun this command to update this script
 curl -s https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
 sudo tee /usr/local/bin/fshare2gdrive.js >/dev/null
+
 # Make it executable
 sudo chmod +x /usr/local/bin/fshare2gdrive.js
+
 # Init login FShare
 fshare2gdrive.js
 
