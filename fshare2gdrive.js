@@ -191,9 +191,9 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 	} catch(e) {console.error(RED, e)}
 }
 
-async function genCmd(fshare_folder, remote_drive, remote_path, is_root_folder=true) {
+async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_folder=true) {
 	const folder_code = fshare_folder.match(/folder\/(\w+)$/)[1]
-	const FSHARE_FOLDER_PATH = `/api/v3/files/folder?linkcode=${folder_code}&sort=type,-modified&page=1`
+	const FSHARE_FOLDER_PATH = `/api/v3/files/folder?linkcode=${folder_code}&sort=type,-modified&page=${page}`
 	
 	let options = {
 		'method': 'GET',
@@ -210,10 +210,13 @@ async function genCmd(fshare_folder, remote_drive, remote_path, is_root_folder=t
 			}	else {
 				item_folder = `https://fshare.vn/folder/${item.linkcode}`
 				item_path = `${remote_path.replace(/\/$/,'')}/${body.current.name}/${item.name}/`
-				await genCmd(item_folder, remote_drive, item_path, false)
+				await genCmd(item_folder, remote_drive, item_path, 1, false)
 			}
 		})
 		await Promise.all(promises)
+		if (body._links.last !== undefined) {
+			await genCmd(fshare_folder, remote_drive, remote_path, page+1)
+		}
 	} catch (e) {
 		console.error(RED, e)
 		process.exit(1)
