@@ -7,9 +7,9 @@ NodeJS script for direct uploading from FShare.vn to Google Drive without storin
 1. [RClone](https://rclone.org)
 
 ```bash
-# Install rclone
+# Install RClone
 curl -s https://rclone.org/install.sh | sudo bash
-# Login
+# Login GDrive for RClone.
 rclone config
 ```
 
@@ -18,7 +18,7 @@ Please see [RClone official documents support for Google Drive](https://rclone.o
 2. NodeJS 10+, [GNU Parallel](https://www.gnu.org/software/parallel/) and curl
 
 ``` bash
-# Install on Ubuntu
+# Install dependencies on Ubuntu
 sudo apt-get update && \
 sudo apt-get install parallel curl -y && \
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash
@@ -79,7 +79,7 @@ temp && parallel -j 1 < temp
 `<rclone_remote_name>`: your rclone remote name that you have configured in step 1
 
 `<remote_folder_path>`: your remote folder path you want to upload to.
-> Use parallel download ONLY when you make sure all folders included subfolders are exist in remote folder path or rclone will create duplicated folders!
+> Use parallel download ONLY when you make sure all folders included subfolders are existed in remote folder path or rclone will create duplicated folders!
 
 E.g:
 
