@@ -28,17 +28,7 @@ curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash
 
 > This script is recommended to run on an unlimited bandwidth VPS or it will be getting costly over time
 
-1. Install and login gdrive with rclone
-
-``` bash
-# Login
-rclone config
-
-```
-
-Please see [RClone official documents support for Google Drive](https://rclone.org/drive/) for more details.
-
-2. Install this script and login fshare
+1. Install this script and login fshare
 
 ``` bash
 # Download/update this script 
@@ -53,7 +43,7 @@ fshare2gdrive.js
 
 > On the first time you login, it will ask for login FShare `username` and `password` then store login credentials to `$HOME/.creds` in PLAIN TEXT for later use. So use with caution!
 
-3. Download single FShare FILE to GDrive
+2. Download single FShare FILE to GDrive
 
 ``` bash
 fshare2gdrive.js "<fshare_file_url>" "<rclone_remote_name>" "<remote_folder_path>"
@@ -75,7 +65,7 @@ E.g:
 fshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"
 ```
 
-4. Download whole FShare FOLDER to GDrive synchronously (one by one file) ***RECOMMENDED way***
+3. Download whole FShare FOLDER to GDrive SYNCHRONOUSLY (one by one file) ***RECOMMENDED way***
 
 ``` bash
 # "parallel -j 1" will download synchronously (one by one file) RECOMMENDED!
