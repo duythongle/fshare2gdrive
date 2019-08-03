@@ -177,7 +177,7 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 		fshare_download_url = body.location
 		file_name = decodeURI(fshare_download_url.match(/http.+\/(.+?)$/)[1])
 		rclone_path = `"${remote_drive}":"${remote_path.replace(/\/$/,'')}/${file_name}"`
-		transfer_cmd = `curl -s "${fshare_download_url}" | rclone rcat ${rclone_path}`
+		transfer_cmd = `curl -s "${fshare_download_url}" | rclone rcat --stats-one-line -P --stats 2s ${rclone_path}`
 		const { stdout, stderr } = await exec(transfer_cmd);
 		if (stderr != "") {
 			console.error(RED, stderr)
