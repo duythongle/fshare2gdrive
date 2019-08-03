@@ -183,6 +183,7 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 			console.error(RED, stderr)
 		} else {
 			console.log(GREEN, transfer_cmd)
+			console.log(stdout)
 			console.log(GREEN, "***** DONE *****")
 		}
 	} catch(e) {console.error(RED, e)}
