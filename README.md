@@ -31,7 +31,8 @@ Please see [RClone official documents support for Google Drive](https://rclone.o
 # Install dependencies on Ubuntu
 sudo apt-get update && \
 sudo apt-get install parallel curl -y && \
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash && \
+sudo apt install -y nodejs
 ```
 
 ## Usage
