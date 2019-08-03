@@ -2,6 +2,14 @@
 NodeJS script for direct uploading from FShare.vn to Google Drive without storing files locally.
 > For deprecated bash script (download.sh and login.sh), please see [here](https://github.com/duythongle/fshare2gdrive/blob/0cead7f9229fe6e54b2e9e81add0f6da4bdf453b/README.md).
 
+## Features
+
+- Pipe upload to GDrive without storing file locally. No huge storage needed! (thanks to RClone rcat feature)
+
+- Download whole FShare folder recursively with folder path preserved
+
+- Download in parallel (NOT recommended) and Resumable (thanks to GNU Parallel --resume)
+
 ## Dependencies
 
 1. [RClone](https://rclone.org)
