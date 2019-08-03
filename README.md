@@ -81,14 +81,14 @@ fshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClo
 3. Download whole FShare FOLDER to GDrive SYNCHRONOUSLY (one by one file) ***RECOMMENDED way***
 
 ``` bash
-# Generate single file download commands list for later use
+# Generate single file download commands list for later use store in "/tmp/commands_list"
 fshare2gdrive.js \
-"<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" > /tmp/commands_list
+"<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" > /path/to/temp/commands_list
 
 # then make use of gnu parallel to run all command (resumable)
 # "parallel -j 1" will download synchronously (one by one file) RECOMMENDED!
 # "parallel -j X" greater then 1 will download in parallel with X number of simultaneous jobs
-parallel -j 1 --bar --resume < /tmp/commands_list
+parallel -j 1 --bar --resume --joblog /path/to/temp/fshare2gdrive/joblogs < /path/to/temp/commands_list
 
 ```
 
@@ -102,12 +102,13 @@ parallel -j 1 --bar --resume < /tmp/commands_list
 E.g:
 
 ``` bash
-# The command below will download recursively all
-# files of folder "https://www.fshare.vn/folder/XXXXXXXXXXX"
-# and pipe upload to
-# "rclone rcat gdrive-remote:/RClone Upload/fshare/folder/path/included/subfolder"
-fshare2gdrive.js "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" > \
-temp && parallel -j 1 < temp
+# Generate single file download commands list for later use
+fshare2gdrive.js \
+"https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" \
+> /tmp/commands_list
+
+# Start running all commands list to download
+parallel -j 1 --bar --resume --joblog /tmp/fshare2gdrive.joblogs < /tmp/commands_list
 
 ```
 
