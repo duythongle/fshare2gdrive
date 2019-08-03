@@ -73,10 +73,15 @@ fshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClo
 3. Download whole FShare FOLDER to GDrive SYNCHRONOUSLY (one by one file) ***RECOMMENDED way***
 
 ``` bash
+# Generate single file download commands list for later use
+fshare2gdrive.js \
+"<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" > /tmp/commands_list
+
+# then make use of gnu parallel to run all command (resumable)
 # "parallel -j 1" will download synchronously (one by one file) RECOMMENDED!
 # "parallel -j X" greater then 1 will download in parallel with X number of simultaneous jobs
-fshare2gdrive.js "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" > \
-temp && parallel -j 1 < temp
+parallel -j 1 --bar --resume < /tmp/commands_list
+
 ```
 
 `<fshare_folder_url>`: your fshare file link.
