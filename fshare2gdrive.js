@@ -6,6 +6,7 @@ const http = require('https')
 
 const home_dir = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
 const creds_path = path.join(home_dir,'.creds')
+const version_path = path.join(home_dir,'.fshare2gdrive.version')
 let creds = {}
 const args = process.argv.slice(2)
 const rl = require('readline').createInterface({
@@ -49,7 +50,7 @@ const exists = (path) => {
 	})
 }
 fs.exists[util.promisify.custom] = exists
-const cred_exists = util.promisify(fs.exists)
+const file_exists = util.promisify(fs.exists)
 const readFileAsync = util.promisify(fs.readFile)
 const writeFileAsync = util.promisify(fs.writeFile)
 const deleteFileAsync = util.promisify(fs.unlink)
@@ -93,7 +94,7 @@ function request(params, postData) {
 
 async function checkLogin(show_log = true){
 	try{
-		if (!await cred_exists(creds_path)) { // first login
+		if (!await file_exists(creds_path)) { // first login
 			console.log(RED, 'Login failed!!! Please login with your FShare VIP account first')
 			await login() // login and save creds file
 		}	else { // if creds file exists
@@ -156,10 +157,6 @@ async function login(username, password) {
 	}
 }
 
-async function extract_vip_url(fshare_link, rclone_path) {
-
-}
-
 async function transfer(fshare_file, remote_drive, remote_path) {
 	fshare_file = fshare_file.match(/https*.+?\/file\/\w+/)[0]
 	// let fshare_folder = args[0].match(/http\s*:.+?\/folder\/\w+/)[0]
@@ -190,6 +187,26 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 		}
 	} catch(e) {console.error(RED, e)}
 }
+
+// async function checkUpdate(){
+// 	try {
+// 		if (!await file_exists(version_path)) {
+// 			let options = {
+// 				'method': 'GET',
+// 				'hostname': 'api.github.com',
+// 				'port': 443,
+// 				'path': '/repos/duythongle/fshare2gdrive/commits/master',
+// 				'headers': {'Accept-Encoding': 'gzip, deflate'}
+// 			}
+// 			const body = await request(options, false)
+// 			await writeFileAsync(version_path, JSON.stringify(body.sha.match(/^\w{7}/)))
+// 		} else {
+// 			const version = readFileAsync(version_path)
+// 		}
+// 	} catch (e) {
+// 		console.error(RED, e)
+// 	}
+// }
 
 async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_folder=true) {
 	const folder_code = fshare_folder.match(/folder\/(\w+)$/)[1]
@@ -241,6 +258,9 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 		await genCmd(args[0], args[1], args[2])
 		process.exit(0)
 	} else {
+		console.log(GREEN, "Please update this script frequently.")
+		console.log(GREEN, "See README > Usage > 1. for update command on the following link")
+		console.log(GREEN, "https://github.com/duythongle/fshare2gdrive#usage")
 		await checkLogin()
 		await transfer(args[0], args[1], args[2])
 		process.exit(0)
