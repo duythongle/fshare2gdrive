@@ -224,7 +224,7 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 		const body = await request(options, false)
 		const promises = body.items.map(async item => {
 			if (item.type === 1) {
-				let cmd = `fshare2gdrive.js "https://fshare.vn/file/${item.linkcode}" "${remote_drive}" "${remote_path.replace(/\/$/,'')}/${(is_root_folder ? body.current.name + '/' : '')}"`
+				let cmd = `curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | tail -n+2 | node - "https://fshare.vn/file/${item.linkcode}" "${remote_drive}" "${remote_path.replace(/\/$/,'')}/${(is_root_folder ? body.current.name + '/' : '')}"`
 				console.log(cmd)
 			}	else {
 				item_folder = `https://fshare.vn/folder/${item.linkcode}`
@@ -260,9 +260,6 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 		await genCmd(args[0], args[1], args[2])
 		process.exit(0)
 	} else {
-		console.log(GREEN, "Please update this script frequently.")
-		console.log(GREEN, "See README > Usage > 1. for update command on the following link")
-		console.log(GREEN, "https://github.com/duythongle/fshare2gdrive#usage")
 		await checkLogin()
 		await transfer(args[0], args[1], args[2])
 		process.exit(0)
