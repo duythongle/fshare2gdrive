@@ -78,12 +78,7 @@ tail -n+2 | node - "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RC
 ``` bash
 # Generate single file download commands list for later use to a file "/path/to/temp/commands_list"
 curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
-tail -n+2 | node - "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" > /path/to/temp/commands_list
-
-# then make use of gnu parallel to run all commands (resumable)
-# "parallel -j 1" will download synchronously (one by one file) RECOMMENDED!
-# "parallel -j X" greater then 1 will download in parallel with X number of simultaneous jobs
-parallel -j 1 --bar --resume --joblog /path/to/temp/fshare2gdrive/joblogs < /path/to/temp/commands_list
+tail -n+2 | node - "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" | bash -s
 
 ```
 
@@ -92,9 +87,21 @@ parallel -j 1 --bar --resume --joblog /path/to/temp/fshare2gdrive/joblogs < /pat
 `<rclone_remote_name>`: your rclone remote name that you have configured in step 1
 
 `<remote_folder_path>`: your remote folder path you want to upload to.
-> Use parallel download "parallel -j 2" or greater ONLY when you make sure all folders included subfolders are existed in remote folder path or rclone will create duplicated folders!
 
 E.g:
+
+``` bash
+# Generate single file download commands list for later use to a file "/tmp/commands_list"
+curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
+tail -n+2 | node - \
+"https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" | bash -s
+
+# Start running all commands list to download in parallel
+parallel -j 1 --bar --resume --joblog /tmp/fshare2gdrive.joblogs < /tmp/commands_list
+
+```
+
+You can make use of GNU Parallel to download in multiple simultaneous jobs as example below ***NOT recommended way!!!***
 
 ``` bash
 # Generate single file download commands list for later use to a file "/tmp/commands_list"
@@ -102,9 +109,11 @@ curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshar
 tail -n+2 | node - "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" \
 > /tmp/commands_list
 
-# Start running all commands list to download in parallel
-parallel -j 1 --bar --resume --joblog /tmp/fshare2gdrive.joblogs < /tmp/commands_list
+# Start running all commands list to download in parallel with resumable
+# download jobs will run in 2 simultaneous jobs with "-j 2"
+parallel -j 2 --bar --resume --joblog /tmp/fshare2gdrive.joblogs < /tmp/commands_list
 
 ```
 
+> Use parallel download "parallel -j 2" or greater ONLY when you make sure all folders included subfolders are existed in remote folder path or rclone will create duplicated folders!
 > If you keep getting ssh timeout issue, please make use of [Tmux](https://hackernoon.com/a-gentle-introduction-to-tmux-8d784c404340) or [ssh config file](https://stackoverflow.com/questions/25084288/keep-ssh-session-alive)
