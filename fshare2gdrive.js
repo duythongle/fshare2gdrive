@@ -179,11 +179,11 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 		file_name = decodeURI(fshare_download_url.match(/http.+\/(.+?)$/)[1])
 		rclone_path = `"${remote_drive}":"${remote_path.replace(/\/$/,'')}/${file_name}"`
 		transfer_cmd = `curl -s "${fshare_download_url}" | rclone rcat --stats-one-line -P --stats 2s ${rclone_path}`
-		const { stdout, stderr } = await exec(transfer_cmd, {maxBuffer: MAX_BUFFER});
+		console.log(`Uploading ${fshare_download_url} to ${rclone_path}. Please wait...`)
+		const { stdout, stderr } = await exec(transfer_cmd, {maxBuffer: MAX_BUFFER})
 		if (stderr != "") {
 			console.error(RED, stderr)
 		} else {
-			console.log(GREEN, transfer_cmd)
 			console.log(stdout)
 			console.log(GREEN, "***** DONE *****")
 		}
