@@ -96,7 +96,7 @@ function request(params, postData) {
 async function checkLogin(show_log = true){
 	try{
 		if (!await file_exists(creds_path)) { // first login
-			console.log(RED, 'Login failed!!! Please login with your FShare VIP account first')
+			console.log(RED, 'No login credentials found!!!')
 			await login() // login and save creds file
 		}	else { // if creds file exists
 			if (show_log) console.log(GREEN, `Found saved credentials at ${creds_path}. Autostart logging in FShare...`)
@@ -261,5 +261,6 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 		process.exit(0)
 	} else if (args[0] === "login"){
 		await checkLogin(true)
+		process.exit(0)
 	}
 })();
