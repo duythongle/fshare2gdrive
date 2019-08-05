@@ -131,9 +131,9 @@ async function login(username, password) {
 	try{
 		try { await deleteFileAsync(creds_path)	} catch(e) {}
 		if (typeof username === 'undefined' || typeof password === 'undefined') {
-			fshare.user_email = await ask(util.format(GREEN,'User Email: '))
+			fshare.user_email = args[1]
 			if (!fshare.user_email.includes('@')) throw new Error('Invalid User Email. Terminate process!')
-			fshare.password = await ask(util.format(GREEN,'Password: '))
+			fshare.password = args[2]
 			if (fshare.password === '') throw new Error('Password is null. Terminate process!')
 		} else {
 			fshare.user_email = username
@@ -244,12 +244,8 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 
 (async () => {
 	try {
-		if (args[0] === undefined || !args[0].search(/fshare[.]vn\/(file|folder)\//)) {
-			await checkLogin()
-			throw new Error('No FShare url found! Please input a valid FShare url. E.g:\nfshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"')
-		}
 		if (args === undefined || args.length < 3) {
-			throw new Error('Invalid arguments! Please input valid arguments. E.g:\nfshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"')
+			throw new Error('Invalid arguments!\nPlease input valid arguments.')
 		}
 	} catch (e) {
 		console.error(RED, e)
@@ -259,9 +255,11 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 		await checkLogin(false)
 		await genCmd(args[0], args[1], args[2])
 		process.exit(0)
-	} else {
+	} else if (args[0].search(/fshare[.]vn\/file\//) !== -1){
 		await checkLogin()
 		await transfer(args[0], args[1], args[2])
 		process.exit(0)
+	} else if (args[0] === "login"){
+		await checkLogin(true)
 	}
 })();

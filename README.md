@@ -44,11 +44,10 @@ sudo apt install -y nodejs
 ``` bash
 # Login FShare
 curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
-tail -n+2 | node -
+tail -n+2 | node - login "your_fshare_email" "your_fshare_password"
 
 ```
-
-> On the first time you login, it will ask for login FShare `username` and `password` then store login credentials to `$HOME/.creds` in PLAIN TEXT for later use. So use with caution!
+> You only need to login once. Login credentials will save to `$HOME/.creds` in PLAIN TEXT for later use. So use with caution!
 
 2. Download single FShare FILE to GDrive
 
