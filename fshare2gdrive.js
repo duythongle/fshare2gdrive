@@ -245,7 +245,7 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 (async () => {
 	try {
 		if (args === undefined || args.length < 3) {
-			throw new Error('Invalid arguments!\nPlease input valid arguments.')
+			throw new Error('Invalid arguments!\nPlease input valid arguments. See https://github.com/duythongle/fshare2gdrive#usage for more details')
 		}
 	} catch (e) {
 		console.error(RED, e)
@@ -260,6 +260,7 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 		await transfer(args[0], args[1], args[2])
 		process.exit(0)
 	} else if (args[0] === "login"){
+		try { await deleteFileAsync(creds_path)	} catch(e) {}
 		await checkLogin(true)
 		process.exit(0)
 	}
