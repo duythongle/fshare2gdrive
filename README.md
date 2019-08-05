@@ -60,7 +60,9 @@ fshare2gdrive.js
 2. Download single FShare FILE to GDrive
 
 ``` bash
-fshare2gdrive.js "<fshare_file_url>" "<rclone_remote_name>" "<remote_folder_path>"
+curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
+tail -n+2 | \
+node - "<fshare_file_url>" "<rclone_remote_name>" "<remote_folder_path>"
 
 ```
 
@@ -76,17 +78,18 @@ E.g:
 ``` bash
 # the command below will download "https://www.fshare.vn/file/XXXXXXXXXXX"
 # and pipe upload to "rclone rcat gdrive-remote:/RClone Upload/"
-fshare2gdrive.js "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"
+curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
+tail -n+2 | node - "https://www.fshare.vn/file/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/"
 ```
 
 3. Download whole FShare FOLDER to GDrive SYNCHRONOUSLY (one by one file) ***RECOMMENDED way***
 
 ``` bash
-# Generate single file download commands list for later use store in "/tmp/commands_list"
-fshare2gdrive.js \
-"<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" > /path/to/temp/commands_list
+# Generate single file download commands list for later use to a file "/path/to/temp/commands_list"
+curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
+tail -n+2 | node - "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_path>" > /path/to/temp/commands_list
 
-# then make use of gnu parallel to run all command (resumable)
+# then make use of gnu parallel to run all commands (resumable)
 # "parallel -j 1" will download synchronously (one by one file) RECOMMENDED!
 # "parallel -j X" greater then 1 will download in parallel with X number of simultaneous jobs
 parallel -j 1 --bar --resume --joblog /path/to/temp/fshare2gdrive/joblogs < /path/to/temp/commands_list
@@ -98,17 +101,17 @@ parallel -j 1 --bar --resume --joblog /path/to/temp/fshare2gdrive/joblogs < /pat
 `<rclone_remote_name>`: your rclone remote name that you have configured in step 1
 
 `<remote_folder_path>`: your remote folder path you want to upload to.
-> Use parallel download ONLY when you make sure all folders included subfolders are existed in remote folder path or rclone will create duplicated folders!
+> Use parallel download "parallel -j 2" or greater ONLY when you make sure all folders included subfolders are existed in remote folder path or rclone will create duplicated folders!
 
 E.g:
 
 ``` bash
-# Generate single file download commands list for later use
-fshare2gdrive.js \
-"https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" \
+# Generate single file download commands list for later use to a file "/tmp/commands_list"
+curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
+tail -n+2 | node - "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" \
 > /tmp/commands_list
 
-# Start running all commands list to download
+# Start running all commands list to download in parallel
 parallel -j 1 --bar --resume --joblog /tmp/fshare2gdrive.joblogs < /tmp/commands_list
 
 ```
