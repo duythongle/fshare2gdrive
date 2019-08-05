@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+const MAX_BUFFER = 1024*1024*10
 const path = require('path')
 const util = require('util')
 const fs = require('fs')
@@ -178,7 +179,7 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 		file_name = decodeURI(fshare_download_url.match(/http.+\/(.+?)$/)[1])
 		rclone_path = `"${remote_drive}":"${remote_path.replace(/\/$/,'')}/${file_name}"`
 		transfer_cmd = `curl -s "${fshare_download_url}" | rclone rcat --stats-one-line -P --stats 2s ${rclone_path}`
-		const { stdout, stderr } = await exec(transfer_cmd);
+		const { stdout, stderr } = await exec(transfer_cmd, {maxBuffer: MAX_BUFFER});
 		if (stderr != "") {
 			console.error(RED, stderr)
 		} else {
