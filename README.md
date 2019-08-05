@@ -39,19 +39,12 @@ sudo apt install -y nodejs
 
 > This script is recommended to run on an unlimited bandwidth VPS or it will be getting costly over time
 
-1. Install this script and login fshare
+1. Login fshare
 
 ``` bash
-# Download/update this script
-# Rerun this command to update this script
-curl -s https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
-sudo tee /usr/local/bin/fshare2gdrive.js >/dev/null
-
-# Make it executable
-sudo chmod +x /usr/local/bin/fshare2gdrive.js
-
-# Init login FShare
-fshare2gdrive.js
+# Login FShare
+curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
+tail -n+2 | node -
 
 ```
 
@@ -61,8 +54,7 @@ fshare2gdrive.js
 
 ``` bash
 curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
-tail -n+2 | \
-node - "<fshare_file_url>" "<rclone_remote_name>" "<remote_folder_path>"
+tail -n+2 | node - "<fshare_file_url>" "<rclone_remote_name>" "<remote_folder_path>"
 
 ```
 
