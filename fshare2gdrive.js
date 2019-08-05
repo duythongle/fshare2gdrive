@@ -177,15 +177,19 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 		body = await request(options, JSON.stringify(data))
 		fshare_download_url = body.location
 		file_name = decodeURI(fshare_download_url.match(/http.+\/(.+?)$/)[1])
-		rclone_path = `"${remote_drive}":"${remote_path.replace(/\/$/,'')}/${file_name}"`
-		transfer_cmd = `curl -s "${fshare_download_url}" | rclone rcat --stats-one-line -P --stats 2s ${rclone_path}`
-		console.log(`Uploading ${fshare_download_url} to ${rclone_path}. Please wait...`)
-		const { stdout, stderr } = await exec(transfer_cmd, {maxBuffer: MAX_BUFFER})
-		if (stderr != "") {
-			console.error(RED, stderr)
+		if (remote_drive === undefined || remote_path === undefined) {
+			console.log(fshare_download_url)
 		} else {
-			console.log(stdout)
-			console.log(GREEN, "***** DONE *****")
+			rclone_path = `"${remote_drive}":"${remote_path.replace(/\/$/,'')}/${file_name}"`
+			transfer_cmd = `curl -s "${fshare_download_url}" | rclone rcat --stats-one-line -P --stats 2s ${rclone_path}`
+			console.log(`Uploading ${fshare_download_url} to ${rclone_path}. Please wait...`)
+			const { stdout, stderr } = await exec(transfer_cmd, {maxBuffer: MAX_BUFFER})
+			if (stderr != "") {
+				console.error(RED, stderr)
+			} else {
+				console.log(stdout)
+				console.log(GREEN, "***** DONE *****")
+			}
 		}
 	} catch(e) {console.error(RED, e)}
 }
@@ -244,7 +248,7 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 
 (async () => {
 	try {
-		if (args === undefined || args.length < 3) {
+		if (args === undefined) {
 			throw new Error('Invalid arguments!\nPlease input valid arguments. See https://github.com/duythongle/fshare2gdrive#usage for more details')
 		}
 	} catch (e) {
@@ -256,12 +260,18 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 		await genCmd(args[0], args[1], args[2])
 		process.exit(0)
 	} else if (args[0].search(/fshare[.]vn\/file\//) !== -1){
-		await checkLogin()
-		await transfer(args[0], args[1], args[2])
-		process.exit(0)
+		if (args[1] === undefined || args[2] === undefined) {
+			await checkLogin(false)
+			await transfer(args[0])
+			process.exit(0)
+		} else {
+			await checkLogin()
+			await transfer(args[0], args[1], args[2])
+			process.exit(0)
+		}
 	} else if (args[0] === "login"){
 		try { await deleteFileAsync(creds_path)	} catch(e) {}
-		await checkLogin(true)
+		await checkLogin()
 		process.exit(0)
 	}
 })();
