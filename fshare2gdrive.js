@@ -96,10 +96,10 @@ function request(params, postData) {
 async function checkLogin(show_log = true){
 	try{
 		if (!await file_exists(creds_path)) { // first login
-			console.log(RED, 'No login credentials found!!!')
+			console.error(RED, 'No login credentials found!!!')
 			await login() // login and save creds file
 		}	else { // if creds file exists
-			if (show_log) console.log(GREEN, `Found saved credentials at ${creds_path}. Autostart logging in FShare...`)
+			if (show_log) console.error(GREEN, `Found saved credentials at ${creds_path}. Autostart logging in FShare...`)
 			creds = JSON.parse(await readFileAsync(creds_path))
 			let options = {
 				'method': 'GET',
@@ -115,7 +115,7 @@ async function checkLogin(show_log = true){
 				// relogin with saved email/pword and overwrite creds file
 				await login(creds.user_email, creds.password)
 			}	else { // if creds still working, finally return
-				if (show_log) console.log(CYAN, `Welcome ${body.email}. Your account is ${body.account_type} (expire at ${new Date(parseInt(body.expire_vip) * 1000)})`)
+				if (show_log) console.error(CYAN, `Welcome ${body.email}. Your account is ${body.account_type} (expire at ${new Date(parseInt(body.expire_vip) * 1000)})`)
 				return
 			}
 		}
@@ -182,14 +182,7 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 		} else {
 			rclone_path = `"${remote_drive}":"${remote_path.replace(/\/$/,'')}/${file_name}"`
 			transfer_cmd = `curl -s "${fshare_download_url}" | rclone rcat --stats-one-line -P --stats 2s ${rclone_path}`
-			console.log(`Uploading ${fshare_download_url} to ${rclone_path}. Please wait...`)
-			const { stdout, stderr } = await exec(transfer_cmd, {maxBuffer: MAX_BUFFER})
-			if (stderr != "") {
-				console.error(RED, stderr)
-			} else {
-				console.log(stdout)
-				console.log(GREEN, "***** DONE *****")
-			}
+			console.log(transfer_cmd)
 		}
 	} catch(e) {console.error(RED, e)}
 }
@@ -228,7 +221,7 @@ async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_
 		const body = await request(options, false)
 		const promises = body.items.map(async item => {
 			if (item.type === 1) {
-				let cmd = `curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | tail -n+2 | node - "https://fshare.vn/file/${item.linkcode}" "${remote_drive}" "${remote_path.replace(/\/$/,'')}/${(is_root_folder ? body.current.name + '/' : '')}"`
+				let cmd = `curl -s https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | tail -n+2 | node - "https://fshare.vn/file/${item.linkcode}" "${remote_drive}" "${remote_path.replace(/\/$/,'')}/${(is_root_folder ? body.current.name + '/' : '')}" | bash -s`
 				console.log(cmd)
 			}	else {
 				item_folder = `https://fshare.vn/folder/${item.linkcode}`

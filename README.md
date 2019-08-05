@@ -53,7 +53,7 @@ tail -n+2 | node - login "your_fshare_email" "your_fshare_password"
 
 ``` bash
 curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
-tail -n+2 | node - "<fshare_file_url>" "<rclone_remote_name>" "<remote_folder_path>"
+tail -n+2 | node - "<fshare_file_url>" "<rclone_remote_name>" "<remote_folder_path>" | bash -s
 
 ```
 
