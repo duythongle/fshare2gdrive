@@ -91,13 +91,10 @@ tail -n+2 | node - "<fshare_folder_url>" "<rclone_remote_name>" "<remote_folder_
 E.g:
 
 ``` bash
-# Generate single file download commands list for later use to a file "/tmp/commands_list"
+# Generate single file download commands list and run one by one
 curl -sS https://raw.githubusercontent.com/duythongle/fshare2gdrive/master/fshare2gdrive.js | \
 tail -n+2 | node - \
 "https://www.fshare.vn/folder/XXXXXXXXXXX" "gdrive-remote" "/RClone Upload/" | bash -s
-
-# Start running all commands list to download in parallel
-parallel -j 1 --bar --resume --joblog /tmp/fshare2gdrive.joblogs < /tmp/commands_list
 
 ```
 
