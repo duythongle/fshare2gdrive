@@ -94,20 +94,14 @@ function sleep(ms) {
 }
 // ******************************************
 
-let count = 1
 async function request(options, postData) {
-	if (count > 10) {
-		process.exit(1)
-	}
 	try {
 		let body = await request_promisified(options, postData)
-		count = 1
 		return body
 	} catch (e) {
-		let waitTime = (count+3)
-		console.error(RED, `Retry request ${options.path} ${count} wait time ${waitTime}s...`)
+		let waitTime = 2
+		console.error(RED, `Retry request ${options.path} with wait time ${waitTime}s...`)
 		await sleep(waitTime * 1000)
-		++count
 		return await request(options, postData)
 	}
 }
