@@ -7,7 +7,6 @@ const http = require('https')
 
 const home_dir = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
 const creds_path = path.join(home_dir,'.creds')
-const version_path = path.join(home_dir,'.fshare2gdrive.version')
 let creds = {}
 const args = process.argv.slice(2)
 const rl = require('readline').createInterface({
@@ -17,8 +16,6 @@ const rl = require('readline').createInterface({
 
 const GREEN = '\x1b[32m%s\x1b[0m'
 const RED = '\x1b[31m%s\x1b[0m'
-const BLUE = '\x1b[35m%s\x1b[0m'
-const YELLOW = '\x1b[35m%s\x1b[0m'
 const CYAN = '\x1b[36m%s\x1b[0m'
 
 const FSHARE_LOGIN_PATH = '/api/user/login'
@@ -34,20 +31,20 @@ let fshare = {
 const ask = (questionText) => {
 	return new Promise((resolve, reject) => {
 		rl.question(questionText, resolve)
-  })
+	})
 }
 
 const exists = (path) => {
 	new Promise((resolve, reject) => {
-    fs.access(path, (err) => {
-      if (err) {
-				if (err.code === 'ENOENT') {
-          return resolve(false)
-        }
-        return reject(err)
-      }
-      resolve(true)
-    })
+	fs.access(path, (err) => {
+		if (err) {
+			if (err.code === 'ENOENT') {
+			return resolve(false)
+		}
+		return reject(err)
+		}
+		resolve(true)
+	})
 	})
 }
 fs.exists[util.promisify.custom] = exists
@@ -57,7 +54,7 @@ const writeFileAsync = util.promisify(fs.writeFile)
 const deleteFileAsync = util.promisify(fs.unlink)
 const exec = util.promisify(require('child_process').exec)
 
-function request(params, postData) {
+function request_promisified(params, postData) {
 	return new Promise(function(resolve, reject) {
 			var req = http.request(params, function(res) {
 					// reject on bad status
@@ -91,7 +88,29 @@ function request(params, postData) {
 			req.end()
 	})
 }
+
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
 // ******************************************
+
+let count = 1
+async function request(options, postData) {
+	if (count > 10) {
+		process.exit(1)
+	}
+	try {
+		let body = await request_promisified(options, postData)
+		count = 1
+		return body
+	} catch (e) {
+		let waitTime = (count+3)
+		console.error(RED, `Retry request ${options.path} ${count} wait time ${waitTime}s...`)
+		await sleep(waitTime * 1000)
+		++count
+		return await request(options, postData)
+	}
+}
 
 async function checkLogin(show_log = true){
 	try{
@@ -182,7 +201,7 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 		} else {
 			rclone_path = `"${remote_drive}":"${remote_path.replace(/\/$/,'')}/${file_name}"`
 			transfer_cmd = `curl -s "${fshare_download_url}" | rclone rcat --stats-one-line -P --stats 2s ${rclone_path}`
-			console.error(`Uploading ${fshare_file} to rclone path ${rclone_path}. Please wait...`)
+			console.error(GREEN, `Uploading ${fshare_file} to rclone path ${rclone_path}. Please wait...`)
 			console.log(transfer_cmd)
 		}
 	} catch(e) {console.error(RED, e)}
