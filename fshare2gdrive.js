@@ -11,7 +11,7 @@ let creds = {}
 const args = process.argv.slice(2)
 const rl = require('readline').createInterface({
 	input: process.stdin,
-  output: process.stdout
+	output: process.stdout
 })
 
 const GREEN = '\x1b[32m%s\x1b[0m'
@@ -36,15 +36,15 @@ const ask = (questionText) => {
 
 const exists = (path) => {
 	new Promise((resolve, reject) => {
-	fs.access(path, (err) => {
-		if (err) {
-			if (err.code === 'ENOENT') {
-			return resolve(false)
-		}
-		return reject(err)
-		}
-		resolve(true)
-	})
+		fs.access(path, (err) => {
+			if (err) {
+				if (err.code === 'ENOENT') {
+				return resolve(false)
+			}
+			return reject(err)
+			}
+			resolve(true)
+		})
 	})
 }
 fs.exists[util.promisify.custom] = exists
@@ -200,26 +200,6 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 		}
 	} catch(e) {console.error(RED, e)}
 }
-
-// async function checkUpdate(){
-// 	try {
-// 		if (!await file_exists(version_path)) {
-// 			let options = {
-// 				'method': 'GET',
-// 				'hostname': 'api.github.com',
-// 				'port': 443,
-// 				'path': '/repos/duythongle/fshare2gdrive/commits/master',
-// 				'headers': {'Accept-Encoding': 'gzip, deflate'}
-// 			}
-// 			const body = await request(options, false)
-// 			await writeFileAsync(version_path, JSON.stringify(body.sha.match(/^\w{7}/)))
-// 		} else {
-// 			const version = readFileAsync(version_path)
-// 		}
-// 	} catch (e) {
-// 		console.error(RED, e)
-// 	}
-// }
 
 async function genCmd(fshare_folder, remote_drive, remote_path, page=1, is_root_folder=true) {
 	const folder_code = fshare_folder.match(/folder\/(\w+)$/)[1]
