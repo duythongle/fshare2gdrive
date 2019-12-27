@@ -176,7 +176,7 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 	// let fshare_folder = args[0].match(/http\s*:.+?\/folder\/\w+/)[0]
 	let options = {
 		'method': 'POST',
-		'hostname': 'api2.fshare.vn',
+		'hostname': 'api.fshare.vn',
 		'port': 443,
 		'path': FSHARE_DOWNLOAD_PATH,
 		'headers': {'Cookie': `session_id=${creds.session_id}`}
