@@ -116,7 +116,7 @@ async function checkLogin(show_log = true){
 			creds = JSON.parse(await readFileAsync(creds_path))
 			let options = {
 				'method': 'GET',
-				'hostname': 'api2.fshare.vn',
+				'hostname': 'api.fshare.vn',
 				'port': 443,
 				'path': FSHARE_GET_USER_PATH,
 				'headers': {'Cookie': `session_id=${creds.session_id}`}
@@ -154,7 +154,7 @@ async function login(username, password) {
 		}
 		let options = {
 			'method': 'POST',
-			'hostname': 'api2.fshare.vn',
+			'hostname': 'api.fshare.vn',
 			'port': 443,
 			'path': FSHARE_LOGIN_PATH,
 			'headers': {}
