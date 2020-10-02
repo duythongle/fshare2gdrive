@@ -184,7 +184,7 @@ async function transfer(fshare_file, remote_drive, remote_path) {
 	let data = {
 		'url': fshare_file,
 		'token': creds.token,
-		'password': ''
+		'password': process.env.FILE_PASSWORD || '',
 	}
 	try {
 		body = await request(options, JSON.stringify(data))
