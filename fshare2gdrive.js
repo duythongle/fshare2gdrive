@@ -18,6 +18,8 @@ const GREEN = '\x1b[32m%s\x1b[0m'
 const RED = '\x1b[31m%s\x1b[0m'
 const CYAN = '\x1b[36m%s\x1b[0m'
 
+const USER_AGENT = "Mozilla/5.0"
+
 const FSHARE_LOGIN_PATH = '/api/user/login'
 const FSHARE_GET_USER_PATH = '/api/user/get'
 const FSHARE_DOWNLOAD_PATH = '/api/session/download'
@@ -96,6 +98,9 @@ function sleep(ms) {
 
 async function request(options, postData) {
 	try {
+		const headers = options.headers || {}
+		headers["User-Agent"] = USER_AGENT
+		options.headers = headers
 		let body = await request_promisified(options, postData)
 		return body
 	} catch (e) {
