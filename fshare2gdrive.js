@@ -18,7 +18,8 @@ const GREEN = '\x1b[32m%s\x1b[0m'
 const RED = '\x1b[31m%s\x1b[0m'
 const CYAN = '\x1b[36m%s\x1b[0m'
 
-const USER_AGENT = "Mozilla/5.0"
+// sniffed from fshare ios app
+const USER_AGENT = "Fshare/1 CFNetwork/1209 Darwin/20.2.0"
 
 const FSHARE_LOGIN_PATH = '/api/user/login'
 const FSHARE_GET_USER_PATH = '/api/user/get'
