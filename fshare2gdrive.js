@@ -19,13 +19,13 @@ const RED = '\x1b[31m%s\x1b[0m'
 const CYAN = '\x1b[36m%s\x1b[0m'
 
 // sniffed from fshare ios app
-const USER_AGENT = "Fshare/1 CFNetwork/1209 Darwin/20.2.0"
+const USER_AGENT = "fshare2gdrive-35WSIH"
 
 const FSHARE_LOGIN_PATH = '/api/user/login'
 const FSHARE_GET_USER_PATH = '/api/user/get'
 const FSHARE_DOWNLOAD_PATH = '/api/session/download'
 let fshare = {
-	'app_key': 'L2S7R6ZMagggC5wWkQhX2+aDi467PPuftWUMRFSn',
+	'app_key': 'dMnqMMZMUnN5YpvKENaEhdQQ5jxDqddt',
 	'user_email': '',
 	'password': ''
 }
