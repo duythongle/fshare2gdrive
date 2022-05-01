@@ -25,7 +25,7 @@ const FSHARE_LOGIN_PATH = '/api/user/login'
 const FSHARE_GET_USER_PATH = '/api/user/get'
 const FSHARE_DOWNLOAD_PATH = '/api/session/download'
 let fshare = {
-	'app_key': 'L2S7R6ZMagggC5wWkQhX2+aDi467PPuftWUMRFSn',
+	'app_key': 'dMnqMMZMUnN5YpvKENaEhdQQ5jxDqddt',
 	'user_email': '',
 	'password': ''
 }
